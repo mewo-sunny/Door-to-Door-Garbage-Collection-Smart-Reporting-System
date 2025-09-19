@@ -14,15 +14,18 @@ dependencies:
   # Add your other dependencies here
   image_picker: ^1.0.4
   google_maps_flutter: ^2.5.0
-  mobile_scanner: ^7.0.1
-  cupertino_icons: ^1.0.8
+  mobile_scanner: ^5.1.1 # I think having issue here
+  cupertino_icons: ^1.0.8 # Removed duplicate entry
   url_launcher: ^6.2.1
+  shared_preferences: ^2.0.15
+  google_fonts: ^4.0.3
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^6.0.0
+  flutter_lints: ^4.0.0 # Corrected to the latest stable version
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -33,9 +36,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/images/
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

@@ -1,9 +1,9 @@
 // lib/home_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:smart_city_garabage_collection_app/map_screen.dart';
-import 'package:smart_city_garabage_collection_app/scan_screen.dart';
-import 'package:smart_city_garabage_collection_app/more_screen.dart'; // 1. Import the MoreScreen
+import 'package:smart_city_garabage_collection_app/pages/map_screen.dart';
+import 'package:smart_city_garabage_collection_app/pages/scan_screen.dart';
+import 'package:smart_city_garabage_collection_app/pages/more_screen.dart'; // 1. Import the MoreScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
