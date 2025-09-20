@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_city_garabage_collection_app/pages/home_resident_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/home_resident_screen.dart';
 
 class ResidentLoginScreen extends StatefulWidget {
   const ResidentLoginScreen({super.key});

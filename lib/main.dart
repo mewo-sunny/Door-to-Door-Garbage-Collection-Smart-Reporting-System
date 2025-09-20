@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:smart_city_garabage_collection_app/pages/home_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/map_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/scan_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/garbage_details_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/more_screen.dart'; // New
-import 'package:smart_city_garabage_collection_app/pages/attendance_report_screen.dart'; // New
-import 'package:smart_city_garabage_collection_app/pages/raise_query_issue_screen.dart'; // New
-import 'package:smart_city_garabage_collection_app/pages/feedback_screen.dart'; // New
-import 'package:smart_city_garabage_collection_app/pages/contact_technical_support_screen.dart'; // New
-import 'package:smart_city_garabage_collection_app/Pages/intro_page.dart';
+import 'package:smart_city_garbage_collection_app/pages/home_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/map_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/scan_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/garbage_details_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/more_screen.dart'; // New
+import 'package:smart_city_garbage_collection_app/pages/attendance_report_screen.dart'; // New
+import 'package:smart_city_garbage_collection_app/pages/raise_query_issue_screen.dart'; // New
+import 'package:smart_city_garbage_collection_app/pages/feedback_screen.dart'; // New
+import 'package:smart_city_garbage_collection_app/pages/contact_technical_support_screen.dart'; // New
+import 'package:smart_city_garbage_collection_app/Pages/intro_page.dart';
 
 // Resident Imports
-import 'package:smart_city_garabage_collection_app/pages/home_resident_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/issue_reporting_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/collection_schedule_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/segregation_guide_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/receipts_screen.dart';
-import 'package:smart_city_garabage_collection_app/pages/notification_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/home_resident_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/issue_reporting_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/collection_schedule_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/segregation_guide_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/receipts_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/notification_screen.dart';
 
 
 void main() {

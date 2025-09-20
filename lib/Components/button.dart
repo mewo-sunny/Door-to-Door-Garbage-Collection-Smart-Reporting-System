@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_city_garabage_collection_app/pages/login.dart';
+import 'package:smart_city_garbage_collection_app/pages/login.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
