@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Imports for the different login screens
-import 'package:smart_city_garbage_collection_app/pages/login_screen.dart';
-import 'package:smart_city_garbage_collection_app/pages/resident_login_screen.dart';
-import 'package:smart_city_garbage_collection_app/pages/staff_login_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/login/supervisor/login_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/login/user/resident_login_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/login/staff/staff_login_screen.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});

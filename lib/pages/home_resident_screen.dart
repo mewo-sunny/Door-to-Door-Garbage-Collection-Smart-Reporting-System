@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_city_garbage_collection_app/pages/issue_reporting_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/collection_schedule_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/segregation_guide_screen.dart';
-import 'package:smart_city_garbage_collection_app/pages/receipts_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/notification_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/garbage_details_screen.dart'; // Import the GarbageDetailsScreen
 
 class HomeResidentScreen extends StatefulWidget {
   const HomeResidentScreen({super.key});
@@ -22,7 +22,7 @@ class _HomeResidentScreenState extends State<HomeResidentScreen> {
     const IssueReportingScreen(),
     const CollectionScheduleScreen(),
     const SegregationGuideScreen(),
-    const ReceiptsScreen(),
+    const GarbageDetailsScreen(), // Replaced ReceiptsScreen with GarbageDetailsScreen
   ];
 
   // A list of titles for the AppBar, corresponding to each screen.
@@ -31,7 +31,7 @@ class _HomeResidentScreenState extends State<HomeResidentScreen> {
     'Report an Issue',
     'Collection Schedule',
     'Segregation Guide',
-    'Receipts',
+    'Garbage Details', // Replaced "Receipts" with "Garbage Details"
   ];
 
   // This method updates the selected index when a bottom navigation bar item is tapped.
@@ -83,8 +83,8 @@ class _HomeResidentScreenState extends State<HomeResidentScreen> {
             label: 'Guide',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            label: 'Receipts',
+            icon: Icon(Icons.delete), // Updated icon for Garbage Details
+            label: 'Garbage Details', // Updated label
           ),
         ],
         currentIndex: _selectedIndex,

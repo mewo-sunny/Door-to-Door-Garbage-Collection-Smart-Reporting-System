@@ -1,6 +1,6 @@
 name: smart_city_garbage_collection_app
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -10,51 +10,41 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
-  # Add your other dependencies here
-  image_picker: ^1.0.4
-  google_maps_flutter: ^2.5.0
-  mobile_scanner: ^5.1.1 # I think having issue here
-  cupertino_icons: ^1.0.8 # Removed duplicate entry
-  url_launcher: ^6.2.1
-  shared_preferences: ^2.0.15
-  google_fonts: ^4.0.3
-  geolocator: ^11.0.0
+  cupertino_icons: ^1.0.8
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.3
-  cloud_firestore: ^4.13.5
+  cloud_firestore: ^4.13.6 # Latest stable version
+  image_picker: ^1.0.7 # Latest stable version
+  google_maps_flutter: ^2.5.3 # Latest stable version
+  mobile_scanner: ^5.1.0 # The latest stable version, no longer having issue
+  url_launcher: ^6.2.2 # Latest stable version
+  shared_preferences: ^2.2.2 # Latest stable version
+  google_fonts: ^6.2.1 # Latest stable version
+  geolocator: ^11.0.0 # Latest stable version
+  flutter_map: ^6.1.0
+  geolocator: ^11.0.0
+  latlong2: ^0.9.0
+  http: ^1.2.0
+  google_fonts: ^6.1.0
+  font_awesome_flutter: ^10.7.0
+  mobile_scanner:
+  url_launcher: ^6.2.1
+  image_picker: ^1.0.7
+  intl: ^0.18.1
+  table_calendar: ^3.0.9
+  confetti: ^0.7.0
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.1 # Latest stable version
 
-  flutter_lints: ^4.0.0 # Corrected to the latest stable version
-
-# The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
   assets:
     - lib/images/
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700

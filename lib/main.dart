@@ -9,7 +9,8 @@ import 'package:smart_city_garbage_collection_app/pages/attendance_report_screen
 import 'package:smart_city_garbage_collection_app/pages/raise_query_issue_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/feedback_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/contact_technical_support_screen.dart';
-import 'package:smart_city_garbage_collection_app/pages/intro_page.dart';
+// CORRECTED IMPORT PATH BELOW
+import 'package:smart_city_garbage_collection_app/pages/login/intro_page.dart';
 
 // Resident Imports
 import 'package:smart_city_garbage_collection_app/pages/home_resident_screen.dart';
@@ -46,8 +47,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/map': (context) => const MapScreen(),
         '/scan': (context) => const ScanScreen(),
-        '/details': (context) =>
-            const GarbageDetailsScreen(details: 'No details provided'),
+        '/details': (context) => const GarbageDetailsScreen(),
         '/more': (context) => const MoreScreen(),
         '/attendance_report': (context) =>
             const AttendanceReportScreen(),
@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
         '/resident_receipts': (context) => const ReceiptsScreen(),
         '/resident_notifications': (context) => const NotificationScreen(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
