@@ -11,6 +11,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   late AnimationController _controller;
   late Animation<Color?> _color1;
   late Animation<Color?> _color2;
@@ -37,7 +40,26 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void dispose() {
     _controller.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
+  }
+
+  void _login() {
+    // Basic validation to check if fields are empty
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      // Use ScaffoldMessenger.of(context) to show a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a username and password.'),
+        ),
+      );
+      return;
+    }
+
+    // Assuming a successful login, navigate to the home screen
+    // This is a placeholder for your actual authentication logic.
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
@@ -45,93 +67,103 @@ class _LoginScreenState extends State<LoginScreen>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return Scaffold(
-          backgroundColor: Colors.transparent, // Set scaffold background to transparent
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  _color1.value ?? Colors.green,
-                  _color2.value ?? Colors.teal,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'User Login',
-                      style: GoogleFonts.dmSerifDisplay(
-                        fontSize: 32,
-                        color: Colors.white,
-                      ),
+        // Wrap the Scaffold with a Builder to provide a valid context for SnackBar
+        return Builder(
+          builder: (context) {
+            return Scaffold(
+              resizeToAvoidBottomInset: true,
+              body: SingleChildScrollView(
+                child: Container(
+                  // FIX: Set the container's height to the screen height
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        _color1.value ?? Colors.green,
+                        _color2.value ?? Colors.teal,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                            width: 1.5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Center(
+                          child: Text(
+                            'User Login',
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Sign in to your account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                        const SizedBox(height: 32),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Sign in to your account',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  // Username field
+                                  TextField(
+                                    controller: _usernameController,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: _inputDecoration(
+                                        'Username or Email', Icons.person),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  // Password field
+                                  TextField(
+                                    controller: _passwordController,
+                                    obscureText: true,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration:
+                                        _inputDecoration('Password', Icons.lock),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  // Login button
+                                  ElevatedButton(
+                                    onPressed: _login,
+                                    style: _buttonStyle(),
+                                    child: const Text('Login'),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 24),
-                            // Username field
-                            TextField(
-                              style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration('Username or Email', Icons.person),
-                            ),
-                            const SizedBox(height: 16),
-                            // Password field
-                            TextField(
-                              obscureText: true,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration('Password', Icons.lock),
-                            ),
-                            const SizedBox(height: 24),
-                            // Login button
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle login logic here
-                                Navigator.pushReplacementNamed(context, '/home');
-                              },
-                              style: _buttonStyle(),
-                              child: const Text('Login'),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

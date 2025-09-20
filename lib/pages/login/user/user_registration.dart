@@ -11,11 +11,17 @@ class UserRegistrationPage extends StatefulWidget {
 
 class _UserRegistrationPageState extends State<UserRegistrationPage>
     with SingleTickerProviderStateMixin {
+  // Controllers for the text fields
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  // State variable to manage the loading indicator on the button
+  bool _isLoading = false;
+
+  // Animation controller and color tweens for the background gradient
   late AnimationController _controller;
   late Animation<Color?> _color1;
   late Animation<Color?> _color2;
@@ -23,11 +29,13 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
   @override
   void initState() {
     super.initState();
+    // Initialize the animation controller and set it to repeat
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
     )..repeat(reverse: true);
 
+    // Define the color animation for the gradient
     _color1 = ColorTween(
       begin: Colors.green.shade800,
       end: Colors.teal.shade700,
@@ -49,42 +57,59 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
     super.dispose();
   }
 
-  void _register() {
+  // Helper method to show a snackbar with a given message
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // Handles the registration logic
+  Future<void> _register() async {
+    // Basic validation to check if any fields are empty
     if (_usernameController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields.'),
-        ),
-      );
+      _showSnackBar('Please fill in all fields.');
       return;
     }
 
+    // Check if passwords match
     if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match.'),
-        ),
-      );
+      _showSnackBar('Passwords do not match.');
       return;
     }
 
+    // Validate email format using a regular expression
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_emailController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid email address.'),
-        ),
-      );
+      _showSnackBar('Please enter a valid email address.');
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Registration Successful!'),
-      ),
-    );
+    // Simulate an API call or asynchronous task for registration
+    setState(() {
+      _isLoading = true; // Set loading state to true
+    });
+
+    try {
+      // Simulate a network delay
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Once validation and simulated registration is complete, show success message
+      _showSnackBar('Registration Successful!');
+
+    } catch (e) {
+      // Handle any potential errors during the registration process
+      _showSnackBar('Registration failed. Please try again.');
+    } finally {
+      setState(() {
+        _isLoading = false; // Always set loading state to false
+      });
+    }
   }
 
   @override
@@ -95,6 +120,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: Container(
+            // Background gradient decoration
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -125,6 +151,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
                           ),
                         ),
                         const SizedBox(height: 32),
+                        // The glassmorphism card for the form
                         ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           child: BackdropFilter(
@@ -174,8 +201,8 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
                                     controller: _passwordController,
                                     obscureText: true,
                                     style: const TextStyle(color: Colors.white),
-                                    decoration: _inputDecoration(
-                                        'Password', Icons.lock),
+                                    decoration:
+                                        _inputDecoration('Password', Icons.lock),
                                   ),
                                   const SizedBox(height: 16),
                                   // Confirm Password field
@@ -187,18 +214,27 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
                                         'Confirm Password', Icons.lock),
                                   ),
                                   const SizedBox(height: 24),
-                                  // Register button
+                                  // Register button with loading indicator
                                   ElevatedButton(
-                                    onPressed: _register,
+                                    onPressed: _isLoading ? null : _register,
                                     style: _buttonStyle(),
-                                    child: const Text('Register'),
+                                    child: _isLoading
+                                        ? const SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : const Text('Register'),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 32), // instead of Spacer()
+                        const SizedBox(height: 32),
                       ],
                     ),
                   ),
@@ -241,7 +277,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
         side: BorderSide(color: Colors.white.withOpacity(0.3)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 16),
-      minimumSize: const Size.fromHeight(50), // safer than infinity
+      minimumSize: const Size.fromHeight(50),
     );
   }
 }

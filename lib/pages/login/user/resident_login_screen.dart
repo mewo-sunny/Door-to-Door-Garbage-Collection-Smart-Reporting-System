@@ -78,101 +78,104 @@ class _ResidentLoginScreenState extends State<ResidentLoginScreen>
       builder: (context, child) {
         return Scaffold(
           backgroundColor: Colors.transparent,
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  _color1.value ?? Colors.green,
-                  _color2.value ?? Colors.teal,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          body: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    _color1.value ?? Colors.green,
+                    _color2.value ?? Colors.teal,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Resident Login',
-                      style: GoogleFonts.dmSerifDisplay(
-                        fontSize: 32,
-                        color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        'Resident Login',
+                        style: GoogleFonts.dmSerifDisplay(
+                          fontSize: 32,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                            width: 1.5,
+                    const SizedBox(height: 32),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 1.5,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Sign in to your household account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            // Username field
-                            TextField(
-                              controller: _usernameController,
-                              style: const TextStyle(color: Colors.white),
-                              decoration:
-                                  _inputDecoration('Username', Icons.person),
-                            ),
-                            const SizedBox(height: 16),
-                            // Password field
-                            TextField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              style: const TextStyle(color: Colors.white),
-                              decoration:
-                                  _inputDecoration('Password', Icons.lock),
-                            ),
-                            const SizedBox(height: 24),
-                            // Login button
-                            ElevatedButton(
-                              onPressed: _login,
-                              style: _buttonStyle(),
-                              child: const Text('Login'),
-                            ),
-                            const SizedBox(height: 16),
-                            // Registration button
-                            TextButton(
-                              onPressed: _goToRegistration,
-                              child: Text(
-                                "Don't have an account? Register here",
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Sign in to your household account',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w500,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 24),
+                              // Username field
+                              TextField(
+                                controller: _usernameController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration:
+                                    _inputDecoration('Username', Icons.person),
+                              ),
+                              const SizedBox(height: 16),
+                              // Password field
+                              TextField(
+                                controller: _passwordController,
+                                obscureText: true,
+                                style: const TextStyle(color: Colors.white),
+                                decoration:
+                                    _inputDecoration('Password', Icons.lock),
+                              ),
+                              const SizedBox(height: 24),
+                              // Login button
+                              ElevatedButton(
+                                onPressed: _login,
+                                style: _buttonStyle(),
+                                child: const Text('Login'),
+                              ),
+                              const SizedBox(height: 16),
+                              // Registration button
+                              TextButton(
+                                onPressed: _goToRegistration,
+                                child: Text(
+                                  "Don't have an account? Register here",
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

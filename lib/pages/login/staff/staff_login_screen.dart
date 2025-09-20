@@ -71,87 +71,98 @@ class _StaffLoginScreenState extends State<StaffLoginScreen>
       animation: _controller,
       builder: (context, child) {
         return Scaffold(
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  _color1.value ?? Colors.green,
-                  _color2.value ?? Colors.teal,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          // This line is added to ensure the on-screen keyboard works correctly.
+          // It prevents the keyboard from obscuring the input fields.
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView(
+            child: Container(
+              // FIX: Set the height to the full screen height
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    _color1.value ?? Colors.green,
+                    _color2.value ?? Colors.teal,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Staff Login',
-                      style: GoogleFonts.dmSerifDisplay(
-                        fontSize: 32,
-                        color: Colors.white,
+              // Wrap the Padding with a SingleChildScrollView to allow the content to scroll.
+              // This ensures that the text fields are not hidden by the keyboard.
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        'Staff Login',
+                        style: GoogleFonts.dmSerifDisplay(
+                          fontSize: 32,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                            width: 1.5,
+                    const SizedBox(height: 32),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Sign in to your account',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              // Username field
+                              TextField(
+                                controller: _usernameController,
+                                style: const TextStyle(color: Colors.white),
+                                decoration:
+                                    _inputDecoration('Username', Icons.person),
+                              ),
+                              const SizedBox(height: 16),
+                              // Password field
+                              TextField(
+                                controller: _passwordController,
+                                obscureText: true,
+                                style: const TextStyle(color: Colors.white),
+                                decoration:
+                                    _inputDecoration('Password', Icons.lock),
+                              ),
+                              const SizedBox(height: 24),
+                              // Login button
+                              ElevatedButton(
+                                onPressed: _login,
+                                style: _buttonStyle(),
+                                child: const Text('Login'),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Sign in to your account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            // Username field
-                            TextField(
-                              controller: _usernameController,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration('Username', Icons.person),
-                            ),
-                            const SizedBox(height: 16),
-                            // Password field
-                            TextField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration('Password', Icons.lock),
-                            ),
-                            const SizedBox(height: 24),
-                            // Login button
-                            ElevatedButton(
-                              onPressed: _login,
-                              style: _buttonStyle(),
-                              child: const Text('Login'),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -190,6 +201,8 @@ class _StaffLoginScreenState extends State<StaffLoginScreen>
         side: BorderSide(color: Colors.white.withOpacity(0.4)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 16),
+      // RE-ADDED: Ensure the button stretches to full width
+      minimumSize: const Size(double.infinity, 50),
     );
   }
 }

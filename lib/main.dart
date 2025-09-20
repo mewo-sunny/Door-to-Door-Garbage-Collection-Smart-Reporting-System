@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:smart_city_garbage_collection_app/pages/home_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/map_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/scan_screen.dart';
@@ -23,8 +22,6 @@ import 'package:smart_city_garbage_collection_app/pages/notification_screen.dart
 Future<void> main() async {
   // Ensure that Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase
-  await Firebase.initializeApp();
 
   runApp(const MyApp());
 }
