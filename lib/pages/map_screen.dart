@@ -9,51 +9,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-class CollectionPoint {
-  final String id;
-  final String address;
-  final LatLng position;
-  final DateTime collectionDate;
-  bool isCollected;
-
-  CollectionPoint({
-    required this.id,
-    required this.address,
-    required this.position,
-    required this.collectionDate,
-    this.isCollected = false,
-  });
-}
-
-class WasteMap extends StatefulWidget {
-  const WasteMap({super.key});
+// Change the class name to MapScreen to match the filename.
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
 
   @override
-  State<WasteMap> createState() =>
-      _WasteMapState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class _WasteMapState extends State<WasteMap>
-    with TickerProviderStateMixin {
-  final MapController _mapController =
-      MapController();
-  final TextEditingController _searchController =
-      TextEditingController();
+class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
+  final MapController _mapController = MapController();
+  final TextEditingController _searchController = TextEditingController();
   Position? _currentPosition;
 
   bool _isAddingLocation = false;
   LatLng? _centerPinLocation;
-  final TextEditingController
-  _locationNameController =
-      TextEditingController();
+  final TextEditingController _locationNameController = TextEditingController();
 
   late AnimationController _pulseController;
   LatLng? _searchedLocation;
 
   double _sheetPosition = 0.15;
 
-  final List<CollectionPoint>
-  _allCollectionPoints = [
+  final List<CollectionPoint> _allCollectionPoints = [
     CollectionPoint(
       id: '1',
       address: 'Rosary College, Navelim',
@@ -99,9 +77,7 @@ class _WasteMapState extends State<WasteMap>
     setState(() {
       _filteredPoints = _allCollectionPoints
           .where(
-            (point) =>
-                point.collectionDate.day ==
-                today.day,
+            (point) => point.collectionDate.day == today.day,
           )
           .toList();
     });
@@ -110,11 +86,9 @@ class _WasteMapState extends State<WasteMap>
   Future<void> _determinePosition() async {
     // ... permission logic
     try {
-      Position position =
-          await Geolocator.getCurrentPosition(
-            desiredAccuracy:
-                LocationAccuracy.high,
-          );
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
       if (!mounted) return;
       setState(() {
         _currentPosition = position;
@@ -143,8 +117,7 @@ class _WasteMapState extends State<WasteMap>
       final response = await http.get(
         url,
         headers: {
-          'User-Agent':
-              'com.example.waste_management',
+          'User-Agent': 'com.example.waste_management',
         },
       );
       if (!mounted) return;
@@ -154,16 +127,9 @@ class _WasteMapState extends State<WasteMap>
           response.body,
         );
         if (results.isNotEmpty) {
-          final lat = double.parse(
-            results[0]["lat"],
-          );
-          final lon = double.parse(
-            results[0]["lon"],
-          );
-          final searchedPosition = LatLng(
-            lat,
-            lon,
-          );
+          final lat = double.parse(results[0]["lat"]);
+          final lon = double.parse(results[0]["lon"]);
+          final searchedPosition = LatLng(lat, lon);
 
           setState(() {
             _searchedLocation = searchedPosition;
@@ -185,9 +151,7 @@ class _WasteMapState extends State<WasteMap>
             },
           );
         } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Location not found'),
             ),
@@ -198,26 +162,19 @@ class _WasteMapState extends State<WasteMap>
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Error finding location: $e',
-          ),
+          content: Text('Error finding location: $e'),
         ),
       );
     }
   }
 
-  void _animatedMapMove(
-    LatLng destLocation,
-    double destZoom,
-  ) {
+  void _animatedMapMove(LatLng destLocation, double destZoom) {
     final latTween = Tween<double>(
-      begin:
-          _mapController.camera.center.latitude,
+      begin: _mapController.camera.center.latitude,
       end: destLocation.latitude,
     );
     final lngTween = Tween<double>(
-      begin:
-          _mapController.camera.center.longitude,
+      begin: _mapController.camera.center.longitude,
       end: destLocation.longitude,
     );
     final zoomTween = Tween<double>(
@@ -229,11 +186,10 @@ class _WasteMapState extends State<WasteMap>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    final Animation<double> animation =
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.fastOutSlowIn,
-        );
+    final Animation<double> animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.fastOutSlowIn,
+    );
 
     controller.addListener(() {
       _mapController.move(
@@ -246,8 +202,7 @@ class _WasteMapState extends State<WasteMap>
     });
 
     animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed ||
-          status == AnimationStatus.dismissed) {
+      if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
         controller.dispose();
       }
     });
@@ -258,49 +213,41 @@ class _WasteMapState extends State<WasteMap>
   void _toggleAddLocationMode() {
     setState(() {
       _isAddingLocation = !_isAddingLocation;
-      _centerPinLocation = _isAddingLocation
-          ? _mapController.camera.center
-          : null;
+      _centerPinLocation = _isAddingLocation ? _mapController.camera.center : null;
     });
   }
 
   void _confirmAddLocation() async {
     if (_centerPinLocation == null) return;
 
-    final String? locationName =
-        await showDialog<String>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text(
-              'Name New Collection Point',
-            ),
-            content: TextField(
-              controller: _locationNameController,
-              autofocus: true,
-              decoration: const InputDecoration(
-                hintText:
-                    'e.g., "Main Street Bin"',
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () =>
-                    Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(
-                  context,
-                  _locationNameController.text,
-                ),
-                child: const Text('Save'),
-              ),
-            ],
+    final String? locationName = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Name New Collection Point'),
+        content: TextField(
+          controller: _locationNameController,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'e.g., "Main Street Bin"',
           ),
-        );
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(
+              context,
+              _locationNameController.text,
+            ),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
 
-    if (locationName != null &&
-        locationName.isNotEmpty) {
+    if (locationName != null && locationName.isNotEmpty) {
       final newPoint = CollectionPoint(
         id: DateTime.now().toString(),
         address: locationName,
@@ -319,33 +266,25 @@ class _WasteMapState extends State<WasteMap>
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(
-      context,
-    ).size.height;
-    final safeAreaBottom = MediaQuery.of(
-      context,
-    ).padding.bottom;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final safeAreaBottom = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       appBar: AppBar(
         title: TextField(
           controller: _searchController,
-          onSubmitted: (_) =>
-              _searchAndGoToLocation(),
+          onSubmitted: (_) => _searchAndGoToLocation(),
           decoration: InputDecoration(
             hintText: 'Search location...',
             filled: true,
             fillColor: Colors.grey[200],
-            contentPadding:
-                const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 5,
-                ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 5,
+            ),
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                30,
-              ),
+              borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide.none,
             ),
           ),
@@ -358,30 +297,25 @@ class _WasteMapState extends State<WasteMap>
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
-              initialCenter:
-                  _currentPosition != null
+              initialCenter: _currentPosition != null
                   ? LatLng(
                       _currentPosition!.latitude,
                       _currentPosition!.longitude,
                     )
                   : const LatLng(15.286, 73.969),
               initialZoom: 16.0,
-              onPositionChanged:
-                  (position, hasGesture) {
-                    if (_isAddingLocation) {
-                      setState(() {
-                        _centerPinLocation =
-                            position.center;
-                      });
-                    }
-                  },
+              onPositionChanged: (position, hasGesture) {
+                if (_isAddingLocation) {
+                  setState(() {
+                    _centerPinLocation = position.center;
+                  });
+                }
+              },
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName:
-                    'com.example.waste_management',
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.waste_management',
               ),
               if (_searchedLocation != null)
                 MarkerLayer(
@@ -391,8 +325,7 @@ class _WasteMapState extends State<WasteMap>
                       height: 80,
                       point: _searchedLocation!,
                       child: PulsingCircleMarker(
-                        controller:
-                            _pulseController,
+                        controller: _pulseController,
                       ),
                     ),
                   ],
@@ -405,32 +338,21 @@ class _WasteMapState extends State<WasteMap>
                         height: 70,
                         point: point.position,
                         child: Column(
-                          mainAxisSize:
-                              MainAxisSize.min,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              padding:
-                                  const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color:
-                                    Colors.white,
-                                borderRadius:
-                                    BorderRadius.circular(
-                                      12,
-                                    ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors
-                                        .black26,
+                                    color: Colors.black26,
                                     blurRadius: 4,
-                                    offset:
-                                        const Offset(
-                                          0,
-                                          2,
-                                        ),
+                                    offset: const Offset(0, 2),
                                   ),
                                 ],
                               ),
@@ -438,23 +360,14 @@ class _WasteMapState extends State<WasteMap>
                                 point.address,
                                 style: const TextStyle(
                                   fontSize: 10,
-                                  fontWeight:
-                                      FontWeight
-                                          .bold,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                overflow:
-                                    TextOverflow
-                                        .ellipsis,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Icon(
-                              FontAwesomeIcons
-                                  .mapPin,
-                              color:
-                                  point
-                                      .isCollected
-                                  ? Colors.green
-                                  : Colors.red,
+                              FontAwesomeIcons.mapPin,
+                              color: point.isCollected ? Colors.green : Colors.red,
                               size: 25,
                             ),
                           ],
@@ -465,17 +378,14 @@ class _WasteMapState extends State<WasteMap>
               ),
             ],
           ),
-
           if (_isAddingLocation)
             const Center(
               child: Icon(
-                FontAwesomeIcons
-                    .locationCrosshairs,
+                FontAwesomeIcons.locationCrosshairs,
                 color: Colors.blue,
                 size: 40,
               ),
             ),
-
           Positioned(
             bottom: 30,
             right: 15,
@@ -483,16 +393,10 @@ class _WasteMapState extends State<WasteMap>
               children: [
                 FloatingActionButton(
                   heroTag: 'zoomIn',
-                  onPressed: () =>
-                      _animatedMapMove(
-                        _mapController
-                            .camera
-                            .center,
-                        _mapController
-                                .camera
-                                .zoom +
-                            1,
-                      ),
+                  onPressed: () => _animatedMapMove(
+                    _mapController.camera.center,
+                    _mapController.camera.zoom + 1,
+                  ),
                   backgroundColor: Colors.white,
                   mini: true,
                   child: const Icon(
@@ -503,16 +407,10 @@ class _WasteMapState extends State<WasteMap>
                 const SizedBox(height: 8),
                 FloatingActionButton(
                   heroTag: 'zoomOut',
-                  onPressed: () =>
-                      _animatedMapMove(
-                        _mapController
-                            .camera
-                            .center,
-                        _mapController
-                                .camera
-                                .zoom -
-                            1,
-                      ),
+                  onPressed: () => _animatedMapMove(
+                    _mapController.camera.center,
+                    _mapController.camera.zoom - 1,
+                  ),
                   backgroundColor: Colors.white,
                   mini: true,
                   child: const Icon(
@@ -533,42 +431,28 @@ class _WasteMapState extends State<WasteMap>
               ],
             ),
           ),
-
           AnimatedPositioned(
-            duration: const Duration(
-              milliseconds: 300,
-            ),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            bottom:
-                (screenHeight * _sheetPosition) +
-                20 -
-                safeAreaBottom,
+            bottom: (screenHeight * _sheetPosition) + 20 - safeAreaBottom,
             left: 15,
             right: 15,
             child: AnimatedSwitcher(
-              duration: const Duration(
-                milliseconds: 300,
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => ScaleTransition(
+                scale: animation,
+                child: FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
               ),
-              transitionBuilder:
-                  (child, animation) =>
-                      ScaleTransition(
-                        scale: animation,
-                        child: FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        ),
-                      ),
               child: _isAddingLocation
                   ? Row(
-                      key: const ValueKey(
-                        'confirm_buttons',
-                      ),
+                      key: const ValueKey('confirm_buttons'),
                       children: [
                         FloatingActionButton(
-                          onPressed:
-                              _toggleAddLocationMode,
-                          backgroundColor:
-                              Colors.white,
+                          onPressed: _toggleAddLocationMode,
+                          backgroundColor: Colors.white,
                           child: const Icon(
                             Icons.close,
                           ),
@@ -576,8 +460,7 @@ class _WasteMapState extends State<WasteMap>
                         const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed:
-                                _confirmAddLocation,
+                            onPressed: _confirmAddLocation,
                             icon: const Icon(
                               Icons.check,
                             ),
@@ -585,32 +468,23 @@ class _WasteMapState extends State<WasteMap>
                               'Confirm This Location',
                             ),
                             style: ElevatedButton.styleFrom(
-                              padding:
-                                  const EdgeInsets.symmetric(
-                                    vertical: 15,
-                                  ),
-                              shape:
-                                  const StadiumBorder(),
-                              backgroundColor:
-                                  Colors.green,
-                              foregroundColor:
-                                  Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 15,
+                              ),
+                              shape: const StadiumBorder(),
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
                             ),
                           ),
                         ),
                       ],
                     )
                   : FloatingActionButton.extended(
-                      key: const ValueKey(
-                        'add_button',
-                      ),
-                      onPressed:
-                          _toggleAddLocationMode,
-                      backgroundColor:
-                          Colors.blue[800],
+                      key: const ValueKey('add_button'),
+                      onPressed: _toggleAddLocationMode,
+                      backgroundColor: Colors.blue[800],
                       icon: const Icon(
-                        Icons
-                            .add_location_alt_outlined,
+                        Icons.add_location_alt_outlined,
                         color: Colors.white,
                       ),
                       label: const Text(
@@ -622,14 +496,10 @@ class _WasteMapState extends State<WasteMap>
                     ),
             ),
           ),
-
-          NotificationListener<
-            DraggableScrollableNotification
-          >(
+          NotificationListener<DraggableScrollableNotification>(
             onNotification: (notification) {
               setState(() {
-                _sheetPosition =
-                    notification.extent;
+                _sheetPosition = notification.extent;
               });
               return true;
             },
@@ -643,12 +513,9 @@ class _WasteMapState extends State<WasteMap>
                 return Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(
-                          top: Radius.circular(
-                            20,
-                          ),
-                        ),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black26,
@@ -664,69 +531,48 @@ class _WasteMapState extends State<WasteMap>
                         child: Container(
                           width: 40,
                           height: 5,
-                          margin:
-                              const EdgeInsets.symmetric(
-                                vertical: 12,
-                              ),
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 12,
+                          ),
                           decoration: BoxDecoration(
-                            color:
-                                Colors.grey[300],
-                            borderRadius:
-                                BorderRadius.circular(
-                                  10,
-                                ),
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                            ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                        ),
                         child: Text(
                           "Today's Route",
-                          style:
-                              GoogleFonts.inter(
-                                fontSize: 22,
-                                fontWeight:
-                                    FontWeight
-                                        .bold,
-                              ),
+                          style: GoogleFonts.inter(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),
                       ..._filteredPoints.map(
-                        (
-                          point,
-                        ) => CheckboxListTile(
+                        (point) => CheckboxListTile(
                           title: Text(
                             point.address,
-                            style:
-                                const TextStyle(
-                                  fontWeight:
-                                      FontWeight
-                                          .w600,
-                                ),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                          value:
-                              point.isCollected,
+                          value: point.isCollected,
                           onChanged: (bool? value) {
                             setState(() {
-                              point.isCollected =
-                                  value!;
+                              point.isCollected = value!;
                             });
                           },
                           secondary: FaIcon(
-                            FontAwesomeIcons
-                                .mapPin,
-                            color:
-                                point.isCollected
-                                ? Colors.green
-                                : Colors.red,
+                            FontAwesomeIcons.mapPin,
+                            color: point.isCollected ? Colors.green : Colors.red,
                             size: 24,
                           ),
-                          activeColor:
-                              Colors.green,
+                          activeColor: Colors.green,
                         ),
                       ),
                     ],
@@ -741,8 +587,7 @@ class _WasteMapState extends State<WasteMap>
   }
 }
 
-class PulsingCircleMarker
-    extends StatelessWidget {
+class PulsingCircleMarker extends StatelessWidget {
   final AnimationController controller;
   const PulsingCircleMarker({
     super.key,
@@ -759,21 +604,13 @@ class PulsingCircleMarker
           children: <Widget>[
             for (int i = 0; i < 3; i++)
               Transform.scale(
-                scale:
-                    (controller.value +
-                        (i * 0.3)) %
-                    1.0,
+                scale: (controller.value + (i * 0.3)) % 1.0,
                 child: Opacity(
-                  opacity:
-                      1.0 -
-                      ((controller.value +
-                              (i * 0.3)) %
-                          1.0),
+                  opacity: 1.0 - ((controller.value + (i * 0.3)) % 1.0),
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.blue
-                          .withValues(alpha: 0.5),
+                      color: Colors.blue.withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -795,4 +632,20 @@ class PulsingCircleMarker
       },
     );
   }
+}
+
+class CollectionPoint {
+  final String id;
+  final String address;
+  final LatLng position;
+  final DateTime collectionDate;
+  bool isCollected;
+
+  CollectionPoint({
+    required this.id,
+    required this.address,
+    required this.position,
+    required this.collectionDate,
+    this.isCollected = false,
+  });
 }

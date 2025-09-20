@@ -105,97 +105,103 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
                 end: Alignment.bottomRight,
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
+            child: Center(
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Center(
-                      child: Text(
-                        'User Registration',
-                        style: GoogleFonts.dmSerifDisplay(
-                          fontSize: 32,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.3),
-                              width: 1.5,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Center(
+                          child: Text(
+                            'User Registration',
+                            style: GoogleFonts.dmSerifDisplay(
+                              fontSize: 32,
+                              color: Colors.white,
                             ),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Create a new account',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                        ),
+                        const SizedBox(height: 32),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.25),
+                                  width: 1.2,
                                 ),
                               ),
-                              const SizedBox(height: 24),
-                              // Username field
-                              TextField(
-                                controller: _usernameController,
-                                style: const TextStyle(color: Colors.white),
-                                decoration:
-                                    _inputDecoration('Username', Icons.person),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Create a new account',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  // Username field
+                                  TextField(
+                                    controller: _usernameController,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: _inputDecoration(
+                                        'Username', Icons.person),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  // Email field
+                                  TextField(
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration:
+                                        _inputDecoration('Email', Icons.email),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  // Password field
+                                  TextField(
+                                    controller: _passwordController,
+                                    obscureText: true,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: _inputDecoration(
+                                        'Password', Icons.lock),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  // Confirm Password field
+                                  TextField(
+                                    controller: _confirmPasswordController,
+                                    obscureText: true,
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: _inputDecoration(
+                                        'Confirm Password', Icons.lock),
+                                  ),
+                                  const SizedBox(height: 24),
+                                  // Register button
+                                  ElevatedButton(
+                                    onPressed: _register,
+                                    style: _buttonStyle(),
+                                    child: const Text('Register'),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 16),
-                              // Email field
-                              TextField(
-                                controller: _emailController,
-                                keyboardType: TextInputType.emailAddress,
-                                style: const TextStyle(color: Colors.white),
-                                decoration:
-                                    _inputDecoration('Email', Icons.email),
-                              ),
-                              const SizedBox(height: 16),
-                              // Password field
-                              TextField(
-                                controller: _passwordController,
-                                obscureText: true,
-                                style: const TextStyle(color: Colors.white),
-                                decoration:
-                                    _inputDecoration('Password', Icons.lock),
-                              ),
-                              const SizedBox(height: 16),
-                              // Confirm Password field
-                              TextField(
-                                controller: _confirmPasswordController,
-                                obscureText: true,
-                                style: const TextStyle(color: Colors.white),
-                                decoration: _inputDecoration(
-                                    'Confirm Password', Icons.lock),
-                              ),
-                              const SizedBox(height: 24),
-                              // Register button
-                              ElevatedButton(
-                                onPressed: _register,
-                                style: _buttonStyle(),
-                                child: const Text('Register'),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 32), // instead of Spacer()
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -212,10 +218,10 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
       prefixIcon: Icon(icon, color: Colors.white.withOpacity(0.8)),
       labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
       filled: true,
-      fillColor: Colors.white.withOpacity(0.1),
+      fillColor: Colors.white.withOpacity(0.08),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -227,15 +233,15 @@ class _UserRegistrationPageState extends State<UserRegistrationPage>
   // Helper method for consistent button styling
   ButtonStyle _buttonStyle() {
     return ElevatedButton.styleFrom(
-      backgroundColor: Colors.white.withOpacity(0.2),
+      backgroundColor: Colors.white.withOpacity(0.1),
       foregroundColor: Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.white.withOpacity(0.4)),
+        side: BorderSide(color: Colors.white.withOpacity(0.3)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 16),
-      minimumSize: const Size(double.infinity, 50),
+      minimumSize: const Size.fromHeight(50), // safer than infinity
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_city_garbage_collection_app/pages/scan_screen.dart';
-import 'package:smart_city_garbage_collection_app/pages/gps_route_screen.dart';
 import 'package:smart_city_garbage_collection_app/pages/more_staff_screen.dart';
+import 'package:smart_city_garbage_collection_app/pages/map_screen.dart';
 
 class HomeStaffScreen extends StatefulWidget {
   const HomeStaffScreen({super.key});
@@ -15,7 +15,7 @@ class _HomeStaffScreenState extends State<HomeStaffScreen> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const ScanScreen(),
-    const GpsRouteScreen(),
+    const MapScreen(), // Changed from CollectionRouteScreen()
     const MoreStaffScreen(),
   ];
 
